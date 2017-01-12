@@ -22,14 +22,14 @@ defmodule Flexiby.Node do
 
   def render(node) do
     Enum.reduce node.filters,
-      %{node | body: node.source },
+      %{node | body: node.source},
       fn(f, node) ->
         apply_filter(node, f)
       end
   end
 
   def apply_filter(node, "eex") do
-    %{ node | body: EEx.eval_string(node.body) }
+    %{node | body: EEx.eval_string(node.body)}
   end
 
   def apply_filter(node, filter) do
