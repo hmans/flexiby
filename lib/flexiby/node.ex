@@ -6,6 +6,8 @@ defmodule Flexiby.Node do
     ext: nil,
     filters: []
 
+  require Logger
+
   def from(path) do
     source   = File.read!(path)
     filename = Path.basename(path)
@@ -33,7 +35,7 @@ defmodule Flexiby.Node do
   end
 
   def apply_filter(node, filter) do
-    IO.puts "Unknown filter '#{filter}' for #{Path.basename(node.fs_path)}"
+    Logger.warn "Unknown filter '#{filter}' for #{Path.basename(node.fs_path)}"
     node
   end
 end

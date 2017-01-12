@@ -3,6 +3,7 @@ defmodule Flexiby.TestRouter do
 
   alias Flexiby.Node
 
+  plug Plug.Logger
   plug :match
   plug :dispatch
 
