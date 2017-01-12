@@ -58,6 +58,7 @@ defmodule Flexiby.Node do
   end
 
   def render(node) do
+    # Apply all filters
     Enum.reduce node.filters,
       %{node | body: node.source},
       fn(f, node) ->

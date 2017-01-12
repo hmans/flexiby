@@ -33,7 +33,7 @@ defmodule Flexiby.NodePlug do
     case Node.find_child(node, "index.html") do
       nil ->
         node = Node.render(node)
-        conn |> send_resp(200, node.body)
+        conn |> send_resp(200, Flexiby.Layout.apply(node, nil))
       index ->
         serve_node(conn, index, [])
     end
