@@ -22,22 +22,21 @@ defmodule Flexiby.NodePlug do
   end
 
   def serve_node([next | remaining], conn, node) do
-    child = Node.find_child(node, next)
-
-    if child do
-      serve_node(remaining, conn, child)
-    else
-      # 404
-      conn |> send_resp(404, "404")
+    case Node.find_child(node, next) do
+      nil ->
+        conn |> send_resp(404, "404")
+      child ->
+        serve_node(remaining, conn, child)
     end
   end
 
   def serve_node([], conn, node) do
-    if index = Node.find_child(node, "index.html") do
-      serve_node([], conn, index)
-    else
-      node = Node.render(node)
-      conn |> send_resp(200, node.body)
+    case Node.find_child(node, "index.html") do
+      nil ->
+        node = Node.render(node)
+        conn |> send_resp(200, node.body)
+      index ->
+        serve_node([], conn, index)
     end
   end
 end

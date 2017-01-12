@@ -36,7 +36,6 @@ defmodule Flexiby.Node do
   end
 
   def find_child(node, name) do
-    IO.puts "looking for #{name}"
     Enum.find(node.children, fn(c) -> c.full_name == name end)
   end
 
