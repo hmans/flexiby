@@ -31,6 +31,7 @@ defmodule Flexiby.Mixfile do
   defp deps do
     [
       {:cowboy, "~> 1.0.0"},
+      {:sass, "~> 1.0"},
       {:plug, "~> 1.0"},
       {:credo, "~> 0.5", only: [:dev, :test]}
     ]

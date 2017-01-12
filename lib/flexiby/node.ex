@@ -62,6 +62,13 @@ defmodule Flexiby.Node do
     %{node | body: EEx.eval_string(node.body)}
   end
 
+  def apply_filter(node, "scss") do
+    case Sass.compile(node.body) do
+      {:ok, css} -> %{node | body: css}
+      _ -> node
+    end
+  end
+
   def apply_filter(node, filter) do
     Logger.warn "Unknown filter '#{filter}' for #{Path.basename(node.fs_path)}"
     node
