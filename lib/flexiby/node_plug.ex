@@ -8,7 +8,7 @@ defmodule Flexiby.NodePlug do
   plug :dispatch
 
   def test_node do
-    Node.from("./site/index.html.eex.foo")
+    Node.from("./site/index.html.eex")
   end
 
   def find_node(_conn) do
