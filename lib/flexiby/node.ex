@@ -4,6 +4,7 @@ defmodule Flexiby.Node do
     body: nil,
     name: nil,
     ext: nil,
+    full_name: nil,
     filters: [],
     children: []
 
@@ -23,6 +24,7 @@ defmodule Flexiby.Node do
       fs_path: path,
       name: name,
       ext: ext,
+      full_name: "#{name}.#{ext}",
       filters: filters
     }
 
@@ -31,6 +33,11 @@ defmodule Flexiby.Node do
     else
       %{node | source: File.read!(path)}
     end
+  end
+
+  def find_child(node, name) do
+    IO.puts "looking for #{name}"
+    Enum.find(node.children, fn(c) -> c.full_name == name end)
   end
 
   def read_directory(node) do

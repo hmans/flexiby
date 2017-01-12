@@ -12,21 +12,30 @@ defmodule Flexiby.NodePlug do
   end
 
   def find_node(_conn) do
-    create_root() |> Node.render
+    create_root()
   end
 
   match _ do
     node = find_node(conn)
-    serve_node(conn, node)
+    parts = String.split(conn.request_path, "/", trim: true)
+    serve_node(parts, conn, node)
   end
 
-  def serve_node(conn, node) do
-    if Enum.any?(node.children) do
-      # node is a directory
-      child = Enum.at(node.children, 0)
-      serve_node(conn, child)
+  def serve_node([next | remaining], conn, node) do
+    child = Node.find_child(node, next)
+
+    if child do
+      serve_node(remaining, conn, child)
     else
-      # node is a file
+      # 404
+      conn |> send_resp(404, "404")
+    end
+  end
+
+  def serve_node([], conn, node) do
+    if index = Node.find_child(node, "index.html") do
+      serve_node([], conn, index)
+    else
       node = Node.render(node)
       conn |> send_resp(200, node.body)
     end
