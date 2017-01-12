@@ -8,7 +8,7 @@ defmodule Flexiby.TestRouter do
   plug :dispatch
 
   def output do
-    Builder.from("./site/index.html.eex")
+    Builder.from("./site/index.html.eex.foo")
     |> Node.render_to_string
   end
 
