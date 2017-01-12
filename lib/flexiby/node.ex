@@ -76,6 +76,10 @@ defmodule Flexiby.Node do
     end
   end
 
+  def apply_filter(node, "md") do
+    %{node | body: Earmark.to_html(node.body)}
+  end
+
   def apply_filter(node, filter) do
     Logger.warn "Unknown filter '#{filter}' for #{Path.basename(node.fs_path)}"
     node
