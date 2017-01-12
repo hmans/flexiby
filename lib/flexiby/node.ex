@@ -27,14 +27,9 @@ defmodule Flexiby.Node do
     }
 
     if File.dir?(path) do
-      IO.puts "directory!"
       read_directory(node)
     else
-      IO.puts "file!"
-
-      source   = File.read!(path)
-
-      %{node | source:  source}
+      %{node | source: File.read!(path)}
     end
   end
 
