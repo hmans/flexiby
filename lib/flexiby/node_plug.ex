@@ -7,12 +7,12 @@ defmodule Flexiby.NodePlug do
   plug :match
   plug :dispatch
 
-  def test_node do
-    Node.from("./site/index.html.eex")
+  def create_root do
+    Node.create_from("./site/")
   end
 
   def find_node(_conn) do
-    test_node() |> Node.render
+    create_root() |> Node.render
   end
 
   match _ do

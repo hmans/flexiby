@@ -4,22 +4,49 @@ defmodule Flexiby.Node do
     body: nil,
     name: nil,
     ext: nil,
-    filters: []
+    filters: [],
+    children: []
 
   require Logger
 
-  def from(path) do
-    source   = File.read!(path)
+  def create_from(path) do
     filename = Path.basename(path)
-    [name, ext | filters] = String.split(filename, ".", trim: true)
+    [name | extensions] = String.split(filename, ".", trim: true)
 
-    %__MODULE__{
+    [ext, filters] = if Enum.any?(extensions) do
+      extensions
+    else
+      [nil, []]
+    end
+
+    node = %__MODULE__{
       fs_path: path,
-      source:  source,
-      name:    name,
-      ext:     ext,
+      name: name,
+      ext: ext,
       filters: filters
     }
+
+    if File.dir?(path) do
+      IO.puts "directory!"
+      read_directory(node)
+    else
+      IO.puts "file!"
+
+      source   = File.read!(path)
+
+      %{node | source:  source}
+    end
+  end
+
+  def read_directory(node) do
+    files = File.ls!(node.fs_path)
+
+    children = Enum.each files, fn(f) ->
+      path = Path.join(node.fs_path, f)
+      create_from(path)
+    end
+
+    %{node | children: children}
   end
 
   def render(node) do
