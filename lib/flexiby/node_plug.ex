@@ -22,12 +22,11 @@ defmodule Flexiby.NodePlug do
   end
 
   def serve_node([next | remaining], conn, node) do
-    case Node.find_child(node, next) do
-      nil ->
-        conn |> send_resp(404, "404")
-      child ->
-        serve_node(remaining, conn, child)
-    end
+    serve_node(remaining, conn, Node.find_child(node, next))
+  end
+
+  def serve_node(_, conn, nil) do
+    conn |> send_resp(404, "404")
   end
 
   def serve_node([], conn, node) do
