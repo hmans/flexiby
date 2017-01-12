@@ -21,6 +21,14 @@ defmodule Flexiby.NodePlug do
   end
 
   def serve_node(conn, node) do
-    conn |> send_resp(200, node.body)
+    if Enum.any?(node.children) do
+      # node is a directory
+      child = Enum.at(node.children, 0)
+      serve_node(conn, child)
+    else
+      # node is a file
+      node = Node.render(node)
+      conn |> send_resp(200, node.body)
+    end
   end
 end

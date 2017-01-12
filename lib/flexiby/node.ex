@@ -13,7 +13,7 @@ defmodule Flexiby.Node do
     filename = Path.basename(path)
     [name | extensions] = String.split(filename, ".", trim: true)
 
-    [ext, filters] = if Enum.any?(extensions) do
+    [ext | filters] = if Enum.any?(extensions) do
       extensions
     else
       [nil, []]
@@ -41,7 +41,7 @@ defmodule Flexiby.Node do
   def read_directory(node) do
     files = File.ls!(node.fs_path)
 
-    children = Enum.each files, fn(f) ->
+    children = Enum.map files, fn(f) ->
       path = Path.join(node.fs_path, f)
       create_from(path)
     end
