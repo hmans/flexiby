@@ -12,7 +12,7 @@ defmodule Flexiby.Application do
     children = [
       # Starts a worker by calling: Flexiby.Worker.start_link(arg1, arg2, arg3)
       # worker(Flexiby.Worker, [arg1, arg2, arg3]),
-      Plug.Adapters.Cowboy.child_spec(:http, Flexiby.HelloPlug, [], [port: 4004])
+      Plug.Adapters.Cowboy.child_spec(:http, Flexiby.TestRouter, [], [port: 4004])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
